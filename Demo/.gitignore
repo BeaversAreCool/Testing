@@ -2,6 +2,7 @@
 .vs/
 
 *.uasset
+*.umap
 # Compiled Object files
 *.slo
 *.lo
