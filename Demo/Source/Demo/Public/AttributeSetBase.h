@@ -9,6 +9,10 @@
 /**
  * 
  */
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnHealthChangeDelegate, float, Health, float, MaxHealth);
+
+
 UCLASS()
 class DEMO_API UAttributeSetBase : public UAttributeSet
 {
@@ -38,36 +42,35 @@ public:
 	// Primary Attributes (Str, Cons, etc..)
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AttributeSetBase")
 	FGameplayAttributeData Strength;
-	UFUNCTION(Category = "AttributeSetBase")
-	FGameplayAttributeData CalculateStrength();
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AttributeSetBase")
+	FGameplayAttributeData MaxStrength;		
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AttributeSetBase")
 	FGameplayAttributeData Constitution;
-	UFUNCTION(Category = "AttributeSetBase")
-	FGameplayAttributeData CalculateConstitution();
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AttributeSetBase")
+	FGameplayAttributeData MaxConstitution;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AttributeSetBase")
 	FGameplayAttributeData Agility;
-	UFUNCTION(Category = "AttributeSetBase")
-	FGameplayAttributeData CalculateAgility();
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AttributeSetBase")
+	FGameplayAttributeData MaxAgility;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AttributeSetBase")
 	FGameplayAttributeData Intelligence;
-	UFUNCTION(Category = "AttributeSetBase")
-	FGameplayAttributeData CalculateIntelligence();
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AttributeSetBase")
+	FGameplayAttributeData MaxIntelligence;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AttributeSetBase")
 	FGameplayAttributeData Intuition;
-	UFUNCTION(Category = "AttributeSetBase")
-	FGameplayAttributeData CalculateIntuition();
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AttributeSetBase")
+	FGameplayAttributeData MaxIntuition;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AttributeSetBase")
 	FGameplayAttributeData Charisma;
-	UFUNCTION(Category = "AttributeSetBase")
-	FGameplayAttributeData CalculateCharisma();
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AttributeSetBase")
+	FGameplayAttributeData MaxCharisma;
 
-	// Secondary Attributes
+
+	// Secondary Attributes Attack
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AttributeSetBase")
 	FGameplayAttributeData AttackDamage;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AttributeSetBase")
 	FGameplayAttributeData Force;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AttributeSetBase")
-	FGameplayAttributeData Armor;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AttributeSetBase")
 	FGameplayAttributeData CritDamage;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AttributeSetBase")
@@ -82,8 +85,18 @@ public:
 	// This is for targeted non-magical effects, and ongoing non-magical damage effects
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AttributeSetBase")
 	FGameplayAttributeData CriticalChance;
-	
 
+	// Secondary Defensive Stats
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AttributeSetBase")
+	FGameplayAttributeData Armor;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AttributeSetBase")
+	FGameplayAttributeData MagicResist;
+	
+	void PostGameplayEffectExecute(const struct FGameplayEffectModCallbackData& Data) override;
+
+	FOnHealthChangeDelegate OnHealthChange;
+	FOnHealthChangeDelegate OnManaChange;
+	FOnHealthChangeDelegate OnStaminaChange;
 
 
 

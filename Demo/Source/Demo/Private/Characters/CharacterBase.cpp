@@ -2,12 +2,16 @@
 
 
 #include "CharacterBase.h"
+#include "AttributeSetBase.h"
+
 
 // Sets default values
 ACharacterBase::ACharacterBase()
 {
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
+	AbilitySystemComp = CreateDefaultSubobject<UAbilitySystemComponent>("AbilitySystemComp");
+	AttributeSetBaseComp = CreateDefaultSubobject<UAttributeSetBase>("AttributeSetBaseComp");
 
 }
 
@@ -15,7 +19,10 @@ ACharacterBase::ACharacterBase()
 void ACharacterBase::BeginPlay()
 {
 	Super::BeginPlay();
-	
+	AttributeSetBaseComp->OnHealthChange.AddDynamic(this, &ACharacterBase::OnHealthChanged);
+	AttributeSetBaseComp->OnManaChange.AddDynamic(this, &ACharacterBase::OnManaChanged);
+	AttributeSetBaseComp->OnStaminaChange.AddDynamic(this, &ACharacterBase::OnStaminaChanged);
+
 }
 
 // Called every frame
@@ -30,5 +37,31 @@ void ACharacterBase::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
+}
+
+UAbilitySystemComponent* ACharacterBase::GetAbilitySystemComponent() const
+{
+	return AbilitySystemComp;
+}
+
+void ACharacterBase::AquireAbility(TSubclassOf<UGameplayAbility>AbilityToAquire)
+{
+	if (AbilitySystemComp)
+	{
+		if (HasAuthority() && AbilityToAquire)
+		{
+			AbilitySystemComp->GiveAbility(FGameplayAbilitySpec(AbilityToAquire, 1, 0));
+		}
+		AbilitySystemComp->InitAbilityActorInfo(this, this);
+	}
+}
+
+void ACharacterBase::AquireAbilities(TArray<TSubclassOf<UGameplayAbility>>AbilityToAquire)
+{
+	for (TSubclassOf<UGameplayAbility> AbilityItem : AbilityToAquire)
+	{
+		AquireAbility(AbilityItem);
+		if (AbilityItem)
+	}
 }
 
