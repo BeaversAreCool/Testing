@@ -55,4 +55,34 @@ public:
 	void OnStaminaChanged(float Stamian, float MaxStamina);
 	UFUNCTION(BlueprintImplementableEvent, Category = "CharacterBase", meta = (DisplayName = "OnStaminaChanged"))
 	void BP_OnStaminaChanged(float Stamina, float MaxStamina);
+
+	UFUNCTION(BlueprintImplementableEvent, Category = "CharacterBase", meta = (DisplayName = "Die"))
+	void BP_Die();
+	UFUNCTION(BlueprintCallable, Category = "CharacterBase")
+	bool IsOtherHostile(ACharacterBase* Other);
+	uint8 GetTeamID() const;
+
+	UFUNCTION(BlueprintCallable, Category = "CharacrterBase")
+	void AddGameplayTag(FGameplayTag& TagToAdd);
+	UFUNCTION(BlueprintCallable, Category = "CharacterBase")
+	void RemoveGameplayTag(FGameplayTag& TagToRemove);
+	FGameplayTag FullHealthTag;
+
+	UFUNCTION(BlueprintCallable, Category = "CharacterBase")
+	void HitStun(float StunDuration);
+	UFUNCTION(BlueprintCallable, Category = "CharacterBase")
+	void ApplyGESpecHandleToTargetDataSpecsHandle(const FGameplayEffectSpecHandle& GESpecHandle, const FGameplayAbilityTargetDataHandle& TargetDataHandle);
+
+
+protected:
+	bool bIsDead;
+	uint8 TeamID;
+	void AutoDeterminTeamIDbyControllerType();
+	void Dead();
+	void DisableInputControl();
+	void EnableInputControl();
+	FTimerHandle StunTimeHandle;
+	void AddAbilityToUI(TSubclassOf<UGameplayAbilityBase> AbilityToAdd);
+	
 };
+
