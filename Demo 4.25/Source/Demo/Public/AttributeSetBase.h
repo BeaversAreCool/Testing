@@ -97,6 +97,14 @@ public:
 	FOnHealthChangeDelegate OnHealthChange;
 	FOnHealthChangeDelegate OnManaChange;
 	FOnHealthChangeDelegate OnStaminaChange;
+	FOnHealthChangeDelegate OnFatigueChange;
+	FOnHealthChangeDelegate OnStrengthChange;
+	FOnHealthChangeDelegate	OnConstitutionChange;
+	FOnHealthChangeDelegate OnAgilityChange;
+	FOnHealthChangeDelegate OnIntelligenceChange;
+	FOnHealthChangeDelegate OnIntuitionChange;
+	FOnHealthChangeDelegate OnCharismaChange;
+
 
 
 
